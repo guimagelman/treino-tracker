@@ -192,6 +192,25 @@
 
   .ex-row:last-of-type { border-bottom: none; }
 
+  .ex-thumb-wrap {
+    width: 52px;
+    height: 52px;
+    border-radius: 8px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+
+  .ex-thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .ex-thumb-wrap.no-img .ex-thumb { display: none; }
+
   .ex-info { flex: 1; min-width: 0; }
 
   .ex-name {
@@ -264,27 +283,41 @@
   }
 
   /* ── CARDIO BLOCK ── */
-  .cardio-mini {
-    margin-top: 8px;
+  .cardio-block {
+    margin-top: 12px;
     background: rgba(74,158,255,0.07);
     border: 1px solid rgba(74,158,255,0.18);
     border-radius: 10px;
-    padding: 14px 16px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
+    overflow: hidden;
   }
 
-  .cardio-mini-info {}
-  .cardio-mini-title {
+  .cardio-block-header {
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(74,158,255,0.15);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .cardio-block-title {
     font-family: 'Barlow Condensed', sans-serif;
     font-size: 16px;
     font-weight: 700;
     color: #4a9eff;
-    margin-bottom: 2px;
   }
-  .cardio-mini-desc { font-size: 11px; color: var(--muted); }
+
+  .cardio-block-meta { font-size: 11px; color: var(--muted); }
+
+  .cardio-protocol { padding: 12px 16px; }
+
+  .hiit-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .hiit-table th { text-align: left; color: var(--muted); font-weight: 600; padding: 4px 6px; border-bottom: 1px solid var(--border); font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .hiit-table td { padding: 5px 6px; border-bottom: 1px solid rgba(255,255,255,0.04); color: #ccc; }
+  .hiit-table tr:last-child td { border-bottom: none; }
+  .phase-aquecimento td:first-child { color: var(--yellow); font-weight: 600; }
+  .phase-sprint td:first-child { color: var(--accent); font-weight: 600; }
+  .phase-recup td:first-child { color: var(--green); font-weight: 600; }
+  .phase-desacele td:first-child { color: #4a9eff; font-weight: 600; }
 
   /* ── DONE BUTTON ── */
   .done-btn-wrap {
@@ -525,51 +558,84 @@ const FICHAS = {
     name: 'Ficha A — Perna',
     sections: [
       { label: 'Exercícios', exercises: [
-        { id: 'a1', name: 'Terra Romeno com Barra', meta: '3 séries · 10–12 reps' },
-        { id: 'a2', name: 'Leg Press Unilateral', meta: '3 séries · 10 reps/lado' },
-        { id: 'a3', name: 'Cadeira Extensora', meta: '3 séries · 12–15 reps' },
-        { id: 'a4', name: 'Cadeira Flexora', meta: '3 séries · 12 reps' },
-        { id: 'a5', name: 'Abdução de Quadril', meta: '3 séries · 15 reps' },
-        { id: 'a6', name: 'Panturrilha Soleo', meta: '3 séries · 15–20 reps' },
+        { id: 'a1', name: 'Terra Romeno com Barra', meta: '3 séries · 10–12 reps', img: 'https://homegymreview.co.uk/wp-content/uploads/2021/03/Romanian-Deadlift.jpg' },
+        { id: 'a2', name: 'Leg Press Unilateral', meta: '3 séries · 10 reps/lado', img: 'https://i.ytimg.com/vi/IKH9TXGdq0s/maxresdefault.jpg' },
+        { id: 'a3', name: 'Cadeira Extensora', meta: '3 séries · 12–15 reps', img: 'https://training.fit/wp-content/uploads/2020/02/beinstrecker.png' },
+        { id: 'a4', name: 'Cadeira Flexora', meta: '3 séries · 12 reps', img: 'https://www.strengthlog.com/wp-content/uploads/2022/01/Lying-Leg-Curl.png' },
+        { id: 'a5', name: 'Abdução de Quadril', meta: '3 séries · 15 reps', img: 'https://i0.wp.com/www.muscleandfitness.com/wp-content/uploads/2019/08/1109-seated-hip-abduction.jpg' },
+        { id: 'a6', name: 'Panturrilha Soleo', meta: '3 séries · 15–20 reps', img: 'https://www.strengthlog.com/wp-content/uploads/2021/05/Seated-Calf-Raise.png' },
       ]}
     ],
-    cardio: { title: 'HIIT Esteira', desc: '10 min · 3 sprints de 30s' }
+    cardio: {
+      title: 'HIIT Esteira', desc: '10 min · após musculação',
+      protocol: [
+        { phase: 'aquecimento', name: 'Aquecimento', dur: '2 min', spd: '5–6 km/h',   inc: '1%' },
+        { phase: 'sprint',      name: 'Sprint 1',    dur: '30s',   spd: '10–12 km/h', inc: '1%' },
+        { phase: 'recup',       name: 'Recuperação', dur: '90s',   spd: '5–6 km/h',   inc: '1%' },
+        { phase: 'sprint',      name: 'Sprint 2',    dur: '30s',   spd: '10–12 km/h', inc: '1%' },
+        { phase: 'recup',       name: 'Recuperação', dur: '90s',   spd: '5–6 km/h',   inc: '1%' },
+        { phase: 'sprint',      name: 'Sprint 3',    dur: '30s',   spd: '10–12 km/h', inc: '1%' },
+        { phase: 'recup',       name: 'Recuperação', dur: '90s',   spd: '5–6 km/h',   inc: '1%' },
+        { phase: 'desacele',    name: 'Desaceleração', dur: '2 min', spd: '4–5 km/h', inc: '0%' },
+      ]
+    }
   },
   B: {
     name: 'Ficha B — Costas + Bíceps',
     sections: [
       { label: 'Puxadas verticais', exercises: [
-        { id: 'b1', name: 'Puxada Máquina Supreme', meta: '3 séries · 10–12 reps' },
-        { id: 'b2', name: 'Pulldown Máquina Hammer', meta: '3 séries · 10–12 reps' },
+        { id: 'b1', name: 'Puxada Máquina Supreme', meta: '3 séries · 10–12 reps', img: 'https://fitnessvolt.com/wp-content/uploads/2019/12/lat-pulldown.jpg' },
+        { id: 'b2', name: 'Pulldown Máquina Hammer', meta: '3 séries · 10–12 reps', img: 'https://fitnessvolt.com/wp-content/uploads/2019/12/lat-pulldown.jpg' },
       ]},
       { label: 'Remadas horizontais', exercises: [
-        { id: 'b3', name: 'Remada Baixa Supinada', meta: '3 séries · 10 reps' },
-        { id: 'b4', name: 'Remada Cavalinho Hammer', meta: '3 séries · 10–12 reps' },
+        { id: 'b3', name: 'Remada Baixa Supinada', meta: '3 séries · 10 reps', img: 'https://www.cable-machine.com/images/low-row-cable-machine.jpg' },
+        { id: 'b4', name: 'Remada Cavalinho Hammer', meta: '3 séries · 10–12 reps', img: 'https://www.cable-machine.com/images/low-row-cable-machine.jpg' },
       ]},
       { label: 'Bíceps + lombar', exercises: [
-        { id: 'b5', name: 'Bíceps Scott (barra W)', meta: '3 séries · 10–12 reps' },
-        { id: 'b6', name: 'Extensão Lombar Máquina', meta: '3 séries · 12–15 reps' },
+        { id: 'b5', name: 'Bíceps Scott (barra W)', meta: '3 séries · 10–12 reps', img: 'https://www.barbelljocks.com/wp-content/uploads/2021/03/preacher-curl.jpg' },
+        { id: 'b6', name: 'Extensão Lombar Máquina', meta: '3 séries · 12–15 reps', img: 'https://www.bodybuildingwizard.com/wp-content/uploads/2016/09/Machine-Lumbar-Extension-1.png' },
       ]}
     ],
-    cardio: { title: 'Caminhada Inclinada', desc: '10 min · inclinação progressiva' }
+    cardio: {
+      title: 'Caminhada Inclinada', desc: '10 min · após musculação',
+      protocol: [
+        { phase: 'aquecimento', name: 'Aquecimento',  dur: '2 min', spd: '5 km/h',   inc: '2%'  },
+        { phase: 'sprint',      name: 'Bloco 1',      dur: '2 min', spd: '5–6 km/h', inc: '6%'  },
+        { phase: 'sprint',      name: 'Bloco 2',      dur: '2 min', spd: '5–6 km/h', inc: '8%'  },
+        { phase: 'sprint',      name: 'Bloco 3',      dur: '2 min', spd: '5–6 km/h', inc: '10%' },
+        { phase: 'desacele',    name: 'Desaceleração', dur: '2 min', spd: '4 km/h',  inc: '2%'  },
+      ]
+    }
   },
   C: {
     name: 'Ficha C — Peito + Ombro + Tríceps',
     sections: [
       { label: 'Peito', exercises: [
-        { id: 'c1', name: 'Supino Inclinado Hammer', meta: '3 séries · 10–12 reps' },
-        { id: 'c2', name: 'Crucifixo Inclinado Panatta', meta: '3 séries · 12–15 reps' },
+        { id: 'c1', name: 'Supino Inclinado Hammer', meta: '3 séries · 10–12 reps', img: 'https://www.hammerstrength.com/media/catalog/product/cache/1/image/700x700/9df78eab33525d08d6e5fb8d27136e95/h/s/hsip_g.jpg' },
+        { id: 'c2', name: 'Crucifixo Inclinado Panatta', meta: '3 séries · 12–15 reps', img: 'https://fitnessvolt.com/wp-content/uploads/2020/04/incline-dumbbell-fly.jpg' },
       ]},
       { label: 'Ombro', exercises: [
-        { id: 'c3', name: 'Desenvolvimento na Máquina', meta: '3 séries · 10–12 reps' },
-        { id: 'c4', name: 'Elevação Lateral Panatta', meta: '3 séries · 12–15 reps' },
+        { id: 'c3', name: 'Desenvolvimento na Máquina', meta: '3 séries · 10–12 reps', img: 'https://cdn.shopify.com/s/files/1/0449/8453/3153/files/shoulder-press-machine.jpg' },
+        { id: 'c4', name: 'Elevação Lateral Panatta', meta: '3 séries · 12–15 reps', img: 'https://www.strengthlog.com/wp-content/uploads/2022/02/Machine-Lateral-Raise.png' },
       ]},
       { label: 'Tríceps + core', exercises: [
-        { id: 'c5', name: 'Tríceps Pulley com Corda', meta: '3 séries · 12 reps' },
-        { id: 'c6', name: 'Prancha Ventral', meta: '3 séries · 30–45s' },
+        { id: 'c5', name: 'Tríceps Pulley com Corda', meta: '3 séries · 12 reps', img: 'https://fitnessvolt.com/wp-content/uploads/2019/08/tricep-rope-pushdown.jpg' },
+        { id: 'c6', name: 'Prancha Ventral', meta: '3 séries · 30–45s', img: 'https://www.coachmag.co.uk/sites/coachmag.co.uk/files/styles/insert_main_wide_image/public/2018/09/plank-form.jpg' },
       ]}
     ],
-    cardio: { title: 'HIIT Esteira', desc: '10 min · 3 sprints de 30s' }
+    cardio: {
+      title: 'HIIT Esteira', desc: '10 min · após musculação',
+      protocol: [
+        { phase: 'aquecimento', name: 'Aquecimento', dur: '2 min', spd: '5–6 km/h',   inc: '1%' },
+        { phase: 'sprint',      name: 'Sprint 1',    dur: '30s',   spd: '10–12 km/h', inc: '1%' },
+        { phase: 'recup',       name: 'Recuperação', dur: '90s',   spd: '5–6 km/h',   inc: '1%' },
+        { phase: 'sprint',      name: 'Sprint 2',    dur: '30s',   spd: '10–12 km/h', inc: '1%' },
+        { phase: 'recup',       name: 'Recuperação', dur: '90s',   spd: '5–6 km/h',   inc: '1%' },
+        { phase: 'sprint',      name: 'Sprint 3',    dur: '30s',   spd: '10–12 km/h', inc: '1%' },
+        { phase: 'recup',       name: 'Recuperação', dur: '90s',   spd: '5–6 km/h',   inc: '1%' },
+        { phase: 'desacele',    name: 'Desaceleração', dur: '2 min', spd: '4–5 km/h', inc: '0%' },
+      ]
+    }
   }
 };
 
@@ -665,6 +731,9 @@ function renderFicha() {
       const carga = saved[ex.id] || '';
       html += `
         <div class="ex-row">
+          <div class="ex-thumb-wrap">
+            <img class="ex-thumb" src="${ex.img}" alt="${ex.name}" onerror="this.closest('.ex-thumb-wrap').classList.add('no-img')">
+          </div>
           <div class="ex-info">
             <div class="ex-name">${ex.name}</div>
             <div class="ex-meta"><span class="series">${ex.meta}</span></div>
@@ -689,11 +758,21 @@ function renderFicha() {
     });
   });
 
+  const rows = f.cardio.protocol.map(r =>
+    `<tr class="phase-${r.phase}"><td>${r.name}</td><td>${r.dur}</td><td>${r.spd}</td><td>${r.inc}</td></tr>`
+  ).join('');
+
   html += `
-    <div class="cardio-mini">
-      <div class="cardio-mini-info">
-        <div class="cardio-mini-title">🏃 ${f.cardio.title}</div>
-        <div class="cardio-mini-desc">${f.cardio.desc}</div>
+    <div class="cardio-block">
+      <div class="cardio-block-header">
+        <div class="cardio-block-title">🏃 ${f.cardio.title}</div>
+        <div class="cardio-block-meta">${f.cardio.desc}</div>
+      </div>
+      <div class="cardio-protocol">
+        <table class="hiit-table">
+          <thead><tr><th>Fase</th><th>Duração</th><th>Velocidade</th><th>Inclinação</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
       </div>
     </div>`;
 
